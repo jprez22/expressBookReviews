@@ -60,17 +60,18 @@ regd_users.post("/login", (req,res) => {
 
 
 // Add a book review
-regd_users.put("/auth/review/:isbn", (req, res) => {
+regd_users.put("/auth/:isbn/review", (req, res) => {
   const isbn = req.params.isbn;
+  let details = req.query.review;
   const username = req.body.username;
-  const review = req.body.review;
+  const review = {user:username,review:details}
 
   if (!isbn || !username || !review){
     return res.status(400).json({message: "Error: Invalid request!"});
   }
 
   if(!isValid(username)){
-    return res.status(400).json({message: "Error: Invalid username!"});
+    return res.status(400).json({message: "Error: Inval id username!"});
   }
 
   if(!books[isbn]){
