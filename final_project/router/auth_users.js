@@ -60,11 +60,11 @@ regd_users.post("/login", (req,res) => {
 
 
 // Add a book review
-regd_users.put("/auth/:isbn/review", (req, res) => {
+regd_users.put("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
+  const username = req.session.authorization.username;
   let details = req.query.review;
-  const username = req.body.username;
-  const review = {user:username,review:details}
+  let review = {"user": username, "review": details};
 
   if (!isbn || !username || !review){
     return res.status(400).json({message: "Error: Invalid request!"});
@@ -81,6 +81,22 @@ regd_users.put("/auth/:isbn/review", (req, res) => {
   books[isbn].reviews[username]=review;
   return res.status(200).json({message: "Review added successfully!"});
 });
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    const username = req.session.authorization.username;
+    if(!isbn||!username){
+      return res.status(400).json({message: "Error: Invalid request!"});
+    }
+    if(!isValid(username)){
+      return res.status(400).json({message: "Error: Invalid username!"});   
+    }
+    if(!books[isbn]){
+      return res.status(400).json({message: "Error: Invalid ISBN!"});
+    }
+    delete books[isbn].reviews[username];
+    return res.status(200).json({message: "Review deleted successfully!"});
+  });
 
 
 module.exports.authenticated = regd_users;
