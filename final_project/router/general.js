@@ -31,6 +31,16 @@ public_users.get('/:books',function (req, res) {
   res.send(JSON.stringify(books));
 });
 
+// axios get request to book service "/" endpoint
+const getAllBooks = async () => {
+    try {
+      const response = await axios.get(`${BOOK_SERVICE_URL}/`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 // Get book details based on ISBN
 public_users.get('/books/:isbn',function (req, res) {
   //Extract the ISBN parameter 
@@ -38,6 +48,16 @@ public_users.get('/books/:isbn',function (req, res) {
   // Send the array as the reponse to the client
   res.send(books[ISBN]);
  });
+
+ // Get book details by ISBN
+const getBookByISBN = async (isbn) => {
+    try {
+      const response = await axios.get(`${BOOK_SERVICE_URL}/isbn/${isbn}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
@@ -63,6 +83,16 @@ public_users.get('/author/:author',function (req, res) {
   
 });
 
+// Get book details by author
+const getBookByAuthor = async (author) => {
+    try {
+      const response = await axios.get(`${BOOK_SERVICE_URL}/author/${author}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     let title = req.params.title;
@@ -86,6 +116,16 @@ public_users.get('/title/:title',function (req, res) {
     }).catch(err=>res.status(403).json({error: err}))
     
 });
+
+// Get book details by title
+const getBookByTitle = async (title) => {
+    try {
+      const response = await axios.get(`${BOOK_SERVICE_URL}/title/${title}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
 //  Get book review
